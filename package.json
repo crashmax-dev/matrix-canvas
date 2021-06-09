@@ -1,0 +1,45 @@
+{
+    "name": "webpack-umd-template",
+    "version": "1.0.0",
+    "description": "webpack-umd-template",
+    "scripts": {
+        "dev": "cross-env NODE_ENV=development webpack-dev-server --config-name main --host localhost --watch-poll",
+        "build": "cross-env NODE_ENV=production webpack --progress",
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "test": "jest"
+    },
+    "author": {
+        "url": "https://crashmax.ru",
+        "email": "sys@crashmax.ru",
+        "name": "Vitalij Ryndin"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/crashmax-dev/webpack-umd-template.git"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@babel/core": "^7.14.3",
+        "@babel/preset-env": "^7.14.4",
+        "@types/jest": "^26.0.23",
+        "@types/webpack": "^4.41.22",
+        "@types/webpack-dev-server": "^3.11.0",
+        "@typescript-eslint/eslint-plugin": "^4.26.1",
+        "@typescript-eslint/parser": "^4.26.1",
+        "babel-loader": "^8.2.2",
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^6.2.1",
+        "cross-env": "^7.0.3",
+        "eslint": "^7.28.0",
+        "jest": "^27.0.4",
+        "ts-jest": "^27.0.3",
+        "ts-loader": "^8.0.14",
+        "ts-node": "^10.0.0",
+        "typescript": "^4.3.2",
+        "webpack": "^4.44.2",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    }
+}
