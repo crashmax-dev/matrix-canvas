@@ -1,1 +1,3 @@
-import { Matrix } from '../src/matrix'
+test('test', () => {
+  expect(1 + 1).toBe(2)
+})
