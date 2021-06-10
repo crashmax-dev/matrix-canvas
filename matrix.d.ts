@@ -3,13 +3,21 @@ interface MatrixOptions {
     target: HTMLTarget;
     font: Font;
     symbols?: () => string;
+    splashes?: Splashes;
     autoresize?: boolean;
     tracesCount?: number;
+}
+interface Splashes {
+    interval: number;
+    enable: boolean;
+    colors: string[];
+    texts: string[];
 }
 interface Font {
     family: string;
     file: string;
     size: number;
+    colors: string[];
 }
 interface Sizes {
     width?: number;
@@ -27,6 +35,8 @@ export declare class Matrix {
     private _colors;
     private _traces;
     private _symbols;
+    private _splashInterval;
+    private _splashes;
     constructor(options: MatrixOptions);
     get inRunning(): boolean;
     start(): void;
@@ -37,6 +47,10 @@ export declare class Matrix {
     private initTraces;
     private randomInt;
     private randomColor;
+    private randomSplash;
+    private startSplash;
+    private stopSplash;
+    private renderSplash;
     private render;
 }
 export {};
