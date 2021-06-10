@@ -16,6 +16,7 @@ interface Splashes {
   enable: boolean
   colors: string[]
   texts: string[]
+  size: number
 }
 
 interface Font {
@@ -48,7 +49,8 @@ export class Matrix {
     interval: 200,
     enable: false,
     colors: [],
-    texts: []
+    texts: [],
+    size: 40
   }
 
   constructor(options: MatrixOptions) {
@@ -169,7 +171,7 @@ export class Matrix {
 
     this._ctx.save()
     this._ctx.fillStyle = this.randomColor()
-    this._ctx.font = `45pt ${this._font.family}`
+    this._ctx.font = `${this._splashes.size}pt ${this._font.family}`
     this._ctx.rotate(this.randomInt(0, 360))
     this._ctx.fillText(
       this.randomSplash(),
