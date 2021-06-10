@@ -165,7 +165,7 @@ export class Matrix {
   }
 
   private renderSplash(): void {
-    if (!this._ctx) return
+    if (!this._ctx || !this._running) return
 
     this._ctx.save()
     this._ctx.fillStyle = this.randomColor()
