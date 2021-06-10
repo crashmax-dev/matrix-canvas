@@ -6,6 +6,10 @@
   "extends": [
     "plugin:@typescript-eslint/recommended"
   ],
+  "ignorePatterns": [
+    "dist/*",
+    "public/*"
+  ],
   "parserOptions": {
     "ecmaVersion": 12,
     "sourceType": "module"
