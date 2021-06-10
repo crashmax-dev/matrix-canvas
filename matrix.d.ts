@@ -12,6 +12,7 @@ interface Splashes {
     enable: boolean;
     colors: string[];
     texts: string[];
+    size: number;
 }
 interface Font {
     family: string;
