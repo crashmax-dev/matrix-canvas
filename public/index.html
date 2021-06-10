@@ -4,12 +4,44 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Umd</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, shrink-to-fit=no">
+  <title>Matrix</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="matrix.js"></script>
 </head>
 
 <body>
-  <script src="index.js"></script>
+  <div id="matrix"></div>
+  <div class="buttons">
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+    <button id="clear">clear</button>
+    <button id="pause">pause</button>
+  </div>
+  <script>
+    const target = document.querySelector('#matrix'),
+      startBtn = document.querySelector('#start'),
+      stopBtn = document.querySelector('#stop'),
+      clearBtn = document.querySelector('#clear'),
+      pauseBtn = document.querySelector('#pause')
+
+    const matrix = new Matrix({
+      target,
+      // symbols: () => Math.random() > 0.5 ? '1' : '0',
+      font: {
+        family: 'Matrix',
+        file: document.location.origin + '/matrix.regular.ttf',
+        size: 11
+      }
+    })
+
+    console.log(matrix)
+
+    startBtn.addEventListener('click', () => matrix.start())
+    stopBtn.addEventListener('click', () => matrix.stop())
+    clearBtn.addEventListener('click', () => matrix.clear())
+    pauseBtn.addEventListener('click', () => matrix.pause())
+  </script>
 </body>
 
 </html>
