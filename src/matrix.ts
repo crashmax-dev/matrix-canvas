@@ -6,14 +6,23 @@ interface MatrixOptions {
   target: HTMLTarget
   font: Font
   symbols?: () => string
+  splashes?: Splashes
   autoresize?: boolean
   tracesCount?: number
+}
+
+interface Splashes {
+  interval: number
+  enable: boolean
+  colors: string[]
+  texts: string[]
 }
 
 interface Font {
   family: string
   file: string
-  size: number
+  size: number,
+  colors: string[]
 }
 
 interface Sizes {
@@ -34,6 +43,13 @@ export class Matrix {
   private _colors: string[]
   private _traces: number[] = []
   private _symbols: (() => string) | undefined
+  private _splashInterval: NodeJS.Timeout | null
+  private _splashes: Splashes = {
+    interval: 200,
+    enable: false,
+    colors: [],
+    texts: []
+  }
 
   constructor(options: MatrixOptions) {
     this._target = options.target
@@ -46,8 +62,8 @@ export class Matrix {
     this._tracesCount = options.tracesCount || 300
     this._autoresize = options.autoresize ?? true
     this._symbols = options.symbols
-
-    this._colors = [
+    this._splashes = { ...this._splashes, ...options.splashes }
+    this._colors = options.font.colors || [
       '#225400',
       '#66FF00',
       '#155400',
@@ -79,6 +95,7 @@ export class Matrix {
     this._font.load().then(() => {
       this._running = true
       this.render()
+      this.startSplash()
     }).catch(() => {
       throw new Error('Failed loading font!')
     })
@@ -98,6 +115,7 @@ export class Matrix {
     this._ctx.lineTo(0, 0)
     this._ctx.stroke()
     this._ctx.restore()
+    this.stopSplash()
   }
 
   pause(): void {
@@ -125,6 +143,40 @@ export class Matrix {
 
   private randomColor(): string {
     return this._colors[this.randomInt(0, this._colors.length - 1)]
+  }
+
+  private randomSplash(): string {
+    return this._splashes.texts[this.randomInt(0, this._splashes.texts.length - 1)]
+  }
+
+  private startSplash(): void {
+    if (!this._splashInterval) {
+      this._splashInterval = setInterval(() => {
+        this.renderSplash()
+      }, this._splashes.interval)
+    }
+  }
+
+  private stopSplash(): void {
+    if (this._splashInterval) {
+      clearInterval(this._splashInterval)
+      this._splashInterval = null
+    }
+  }
+
+  private renderSplash(): void {
+    if (!this._ctx) return
+
+    this._ctx.save()
+    this._ctx.fillStyle = this.randomColor()
+    this._ctx.font = `45pt ${this._font.family}`
+    this._ctx.rotate(this.randomInt(0, 360))
+    this._ctx.fillText(
+      this.randomSplash(),
+      this.randomInt(200, this._canvas.width - 200),
+      this.randomInt(200, this._canvas.height - 200)
+    )
+    this._ctx.restore()
   }
 
   private render(): void {
