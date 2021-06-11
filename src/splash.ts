@@ -2,17 +2,17 @@ import { Matrix } from './matrix'
 import { randomInt } from './utils'
 
 interface SplashesOptions {
-  interval: number
+  interval?: number
   enable: boolean
   colors: string[]
   texts: string[]
-  size: number
+  size?: number
 }
 
 class Splash {
   private matrix: Matrix
   private interval: NodeJS.Timeout | null
-  private splashes: SplashesOptions = {
+  private options: Required<SplashesOptions> = {
     interval: 200,
     enable: false,
     colors: [],
@@ -20,20 +20,20 @@ class Splash {
     size: 40
   }
 
-  constructor(matrix: Matrix, splashes: SplashesOptions | undefined) {
+  constructor(matrix: Matrix, options: SplashesOptions | undefined) {
     this.matrix = matrix
-    this.splashes = { ...this.splashes, ...splashes }
+    this.options = { ...this.options, ...options }
   }
 
   private randomSplash(): string {
-    return this.splashes.texts[randomInt(0, this.splashes.texts.length - 1)]
+    return this.options.texts[randomInt(0, this.options.texts.length - 1)]
   }
 
   start(): void {
     if (!this.interval) {
       this.interval = setInterval(() => {
         this.render()
-      }, this.splashes.interval)
+      }, this.options.interval)
     }
   }
 
@@ -44,12 +44,12 @@ class Splash {
     }
   }
 
-  render(): void {
+  private render(): void {
     if (!this.matrix.ctx || !this.matrix.running) return
 
     this.matrix.ctx.save()
     this.matrix.ctx.fillStyle = this.matrix.randomColor()
-    this.matrix.ctx.font = `${this.splashes.size}pt ${this.matrix.font.family}`
+    this.matrix.ctx.font = `${this.options.size}pt ${this.matrix.font.family}`
     this.matrix.ctx.rotate(randomInt(0, 360))
     this.matrix.ctx.fillText(
       this.randomSplash(),
