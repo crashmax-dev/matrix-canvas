@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-export const getRender =
+export const useRender =
   window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.mozRequestAnimationFrame ||

@@ -7,7 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
   mode: process.env.NODE_ENV,
   target: 'web',
-  entry: path.join(__dirname, 'src/matrix.ts'),
+  entry: path.join(__dirname, 'src/index.ts'),
   output: {
     path: outputPath,
     filename: 'matrix.js',
