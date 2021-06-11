@@ -11,7 +11,6 @@
 </head>
 
 <body>
-  <div id="matrix"></div>
   <div class="buttons">
     <button id="start">start</button>
     <button id="stop">stop</button>
@@ -19,14 +18,13 @@
     <button id="pause">pause</button>
   </div>
   <script>
-    const target = document.querySelector('#matrix'),
-      startBtn = document.querySelector('#start'),
+    const startBtn = document.querySelector('#start'),
       stopBtn = document.querySelector('#stop'),
       clearBtn = document.querySelector('#clear'),
       pauseBtn = document.querySelector('#pause')
 
     const matrix = new Matrix({
-      target,
+      target: document.body,
       // symbols: () => Math.random() > 0.5 ? '1' : '0',
       font: {
         family: 'Matrix',
@@ -46,6 +44,19 @@
           '#66FF00',
           '#155400'
         ]
+      },
+      flyings: {
+        sprites: [
+          'images/DANKHACKERMANS.gif',
+          'images/HACKERJAMS.gif',
+          'images/HACKERMANS.gif',
+          'images/PEPEGAHACKER.gif',
+          'images/pepeLaughing.gif'
+        ],
+        opacity: 0.5,
+        rotate: [0, 0],
+        width: [24, 32],
+        speed: 45
       }
     })
 

@@ -4,20 +4,15 @@ body {
   font-size: 16px;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   overflow: hidden;
-  line-height: 1;
   background: #000;
-}
-
-.buttons {
-  display: block;
-  position: relative;
-}
-
-#matrix {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: #000;
+}
+
+.buttons {
+  display: block;
+  position: absolute;
 }
