@@ -1,18 +1,13 @@
+/// <reference types="css-font-loading-module" />
+import { Splash, SplashesOptions } from './splash';
 declare type HTMLTarget = HTMLElement | Element;
 interface MatrixOptions {
     target: HTMLTarget;
     font: Font;
     symbols?: () => string;
-    splashes?: Splashes;
+    splashes?: SplashesOptions;
     autoresize?: boolean;
     tracesCount?: number;
-}
-interface Splashes {
-    interval: number;
-    enable: boolean;
-    colors: string[];
-    texts: string[];
-    size: number;
 }
 interface Font {
     family: string;
@@ -20,38 +15,27 @@ interface Font {
     size: number;
     colors: string[];
 }
-interface Sizes {
-    width?: number;
-    height?: number;
-}
-export declare class Matrix {
-    private _target;
-    private _canvas;
-    private _ctx;
-    private _font;
-    private _fontSize;
-    private _tracesCount;
-    private _autoresize;
-    private _running;
-    private _colors;
-    private _traces;
-    private _symbols;
-    private _splashInterval;
-    private _splashes;
+declare class Matrix {
+    ctx: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+    font: FontFace;
+    splash: Splash;
+    target: HTMLTarget;
+    fontSize: number;
+    tracesCount: number;
+    autoresize: boolean;
+    running: boolean;
+    colors: string[];
+    traces: number[];
+    symbols: (() => string) | undefined;
     constructor(options: MatrixOptions);
-    get inRunning(): boolean;
     start(): void;
     stop(): void;
     clear(): void;
     pause(): void;
-    size({ width, height }?: Sizes): void;
+    randomColor(): string;
+    private setSize;
     private initTraces;
-    private randomInt;
-    private randomColor;
-    private randomSplash;
-    private startSplash;
-    private stopSplash;
-    private renderSplash;
     private render;
 }
-export {};
+export { Matrix, MatrixOptions };

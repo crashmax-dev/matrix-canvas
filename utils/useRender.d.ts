@@ -5,4 +5,4 @@ declare global {
         msRequestAnimationFrame(e: FrameRequestCallback): void;
     }
 }
-export declare const getRender: ((callback: FrameRequestCallback) => number) & typeof requestAnimationFrame;
+export declare const useRender: ((callback: FrameRequestCallback) => number) & typeof requestAnimationFrame;
