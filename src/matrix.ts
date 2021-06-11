@@ -1,3 +1,4 @@
+import { Flying, FlyingsOptions } from './flying'
 import { Splash, SplashesOptions } from './splash'
 import { useRender, randomInt } from './utils'
 
@@ -8,6 +9,7 @@ interface MatrixOptions {
   font: Font
   symbols?: () => string
   splashes?: SplashesOptions
+  flyings?: FlyingsOptions
   autoresize?: boolean
   tracesCount?: number
 }
@@ -28,6 +30,7 @@ class Matrix {
   public ctx: CanvasRenderingContext2D
   public canvas: HTMLCanvasElement
   public font: FontFace
+  public flying: Flying
   public splash: Splash
   public target: HTMLTarget
   public fontSize: number
@@ -44,8 +47,10 @@ class Matrix {
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
     this.target.appendChild(this.canvas)
 
+    this.flying = new Flying(this, options.flyings)
     this.splash = new Splash(this, options.splashes)
     this.font = new FontFace(options.font.family, `url(${options.font.file})`)
+
     this.fontSize = options.font.size
     this.tracesCount = options.tracesCount || 300
     this.autoresize = options.autoresize ?? true
@@ -79,8 +84,9 @@ class Matrix {
       this.running = true
       this.render()
       this.splash.start()
+      this.flying.start()
     }).catch(() => {
-      throw new Error('Failed loading font!')
+      throw new Error('Failed loading `font.file`')
     })
   }
 
@@ -98,6 +104,7 @@ class Matrix {
     this.ctx.lineTo(0, 0)
     this.ctx.stroke()
     this.ctx.restore()
+    this.flying.clear()
   }
 
   pause(): void {
@@ -117,7 +124,7 @@ class Matrix {
     this.canvas.height = height
   }
 
-  private initTraces() {
+  private initTraces(): void {
     while (this.traces.length !== this.tracesCount) {
       this.traces.push(randomInt(0, 1000))
     }
