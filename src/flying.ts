@@ -35,10 +35,6 @@ class Flying {
   private interval: NodeJS.Timeout | null
 
   constructor(matrix: Matrix, options: FlyingsOptions | undefined) {
-    if (options?.width && options.width[0] > options.width[1]) {
-      throw new Error('Range `flyings.width` cannot be larger than the first number')
-    }
-
     this.matrix = matrix
     this.options = { ...this.options, ...options }
   }
