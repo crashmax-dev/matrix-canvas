@@ -1,6 +1,6 @@
+import { randomInt } from './utils'
 import { Flying, FlyingsOptions } from './flying'
 import { Splash, SplashesOptions } from './splash'
-import { useRender, randomInt } from './utils'
 
 type HTMLTarget = HTMLElement | Element
 
@@ -134,7 +134,7 @@ class Matrix {
     if (!this.ctx || !this.running) return
     if (this.traces.length !== this.tracesCount) this.initTraces()
 
-    useRender(() => this.render())
+    window.requestAnimationFrame(() => this.render())
 
     this.ctx.fillStyle = 'rgba(0, 0, 0, .05)'
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
