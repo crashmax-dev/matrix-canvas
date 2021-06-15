@@ -1,5 +1,5 @@
-# matrix-js
+# canvas-matrix2d
 
-[![Build Status](https://travis-ci.org/crashmax-dev/matrix-js.svg?branch=master)](https://travis-ci.org/crashmax-dev/matrix-js)
+[![Build Status](https://travis-ci.org/crashmax-dev/canvas-matrix2d.svg?branch=master)](https://travis-ci.org/crashmax-dev/canvas-matrix2d)
 
-➡️ https://crashmax-dev.github.io/matrix-js/
+➡️ https://crashmax-dev.github.io/canvas-matrix2d/

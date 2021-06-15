@@ -1,7 +1,7 @@
 {
-    "name": "webpack-umd-template",
+    "name": "canvas-matrix2d",
     "version": "1.0.0",
-    "description": "webpack-umd-template",
+    "description": "canvas-matrix2d",
     "scripts": {
         "dev": "cross-env NODE_ENV=development webpack-dev-server --config-name main --host localhost --watch-poll",
         "build": "cross-env NODE_ENV=production webpack --progress",
@@ -17,7 +17,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/crashmax-dev/webpack-umd-template.git"
+        "url": "git+https://github.com/crashmax-dev/canvas-matrix2d.git"
     },
     "dependencies": {},
     "devDependencies": {
