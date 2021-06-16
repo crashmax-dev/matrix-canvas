@@ -1,15 +1,15 @@
 /// <reference types="css-font-loading-module" />
-import { Flying, FlyingsOptions } from './flying';
+import { Entity, EntityOptions } from './entity';
 import { Splash, SplashesOptions } from './splash';
 declare type HTMLTarget = HTMLElement | Element;
 interface MatrixOptions {
-    target: HTMLTarget;
     font: Font;
-    symbols?: () => string;
-    splashes?: SplashesOptions;
-    flyings?: FlyingsOptions;
+    symbol?: () => string;
+    splash?: SplashesOptions;
+    entity?: EntityOptions;
     autoresize?: boolean;
     tracesCount?: number;
+    fpsMonitor?: boolean;
 }
 interface Font {
     family: string;
@@ -21,7 +21,7 @@ declare class Matrix {
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     font: FontFace;
-    flying: Flying;
+    entity: Entity;
     splash: Splash;
     target: HTMLTarget;
     fontSize: number;
@@ -31,7 +31,7 @@ declare class Matrix {
     colors: string[];
     traces: number[];
     symbols: (() => string) | undefined;
-    constructor(options: MatrixOptions);
+    constructor(container: HTMLTarget, opts: MatrixOptions);
     start(): void;
     stop(): void;
     clear(): void;
@@ -41,4 +41,4 @@ declare class Matrix {
     private initTraces;
     private render;
 }
-export { Matrix, MatrixOptions };
+export { Matrix, MatrixOptions, HTMLTarget };
