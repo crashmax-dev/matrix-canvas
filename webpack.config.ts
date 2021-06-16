@@ -12,9 +12,11 @@ module.exports = {
     path: outputPath,
     filename: 'matrix.js',
     libraryTarget: 'umd',
-    globalObject: 'this'
+    globalObject: 'this',
+    umdNamedDefine: true
   },
   devServer: {
+    open: true,
     https: true,
     port: 8080,
     writeToDisk: true,

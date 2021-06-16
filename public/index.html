@@ -7,31 +7,34 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, shrink-to-fit=no">
   <title>Matrix</title>
   <link rel="stylesheet" href="style.css">
-  <script src="matrix.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      overflow: hidden;
+      background: #000;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="buttons">
-    <button id="start">start</button>
-    <button id="stop">stop</button>
-    <button id="clear">clear</button>
-    <button id="pause">pause</button>
-  </div>
+  <script src="matrix.js"></script>
   <script>
-    const startBtn = document.querySelector('#start'),
-      stopBtn = document.querySelector('#stop'),
-      clearBtn = document.querySelector('#clear'),
-      pauseBtn = document.querySelector('#pause')
-
-    const matrix = new Matrix({
-      target: document.body,
-      // symbols: () => Math.random() > 0.5 ? '1' : '0',
+    const matrix = new Matrix(document.body, {
+      symbol: () => Math.random() > 0.5 ? '1' : '0',
       font: {
         family: 'Matrix',
         file: document.location.href + 'matrix.regular.ttf',
         size: 11
       },
-      splashes: {
+      splash: {
         size: 40,
         enable: true,
         texts: [
@@ -45,8 +48,8 @@
           '#155400'
         ]
       },
-      flyings: {
-        sprites: [
+      entity: {
+        files: [
           'images/DANKHACKERMANS.gif',
           'images/HACKERJAMS.gif',
           'images/HACKERMANS.gif',
@@ -57,15 +60,13 @@
         rotate: [0, 0],
         width: [24, 32],
         speed: 45
-      }
+      },
+      fpsMonitor: true
     })
 
     console.log(matrix)
 
-    startBtn.addEventListener('click', () => matrix.start())
-    stopBtn.addEventListener('click', () => matrix.stop())
-    clearBtn.addEventListener('click', () => matrix.clear())
-    pauseBtn.addEventListener('click', () => matrix.pause())
+    matrix.start()
   </script>
 </body>
 

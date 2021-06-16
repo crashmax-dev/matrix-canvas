@@ -1,8 +1,8 @@
 import { Matrix } from './matrix'
 import { randomInt } from './utils/randomInt'
 
-interface FlyingsOptions {
-  sprites: string[]
+interface EntityOptions {
+  files: string[]
   width?: [number, number]
   rotate?: [number, number]
   opacity?: number
@@ -21,26 +21,26 @@ interface FlyingEntities {
   rotate: number
 }
 
-class Flying {
+class Entity {
   private matrix: Matrix
-  private options: Required<FlyingsOptions> = {
-    sprites: [],
+  private options: Required<EntityOptions> = {
+    files: [],
     width: [24, 32],
     rotate: [-30, 30],
     opacity: 0.5,
     speed: 33,
     count: 30
   }
-  private entity: FlyingEntities[] = []
-  private interval: NodeJS.Timeout | null
+  private flyingEntitys: FlyingEntities[] = []
+  private interval: ReturnType<typeof setInterval> | null
 
-  constructor(matrix: Matrix, options: FlyingsOptions | undefined) {
+  constructor(matrix: Matrix, options: EntityOptions | undefined) {
     this.matrix = matrix
     this.options = { ...this.options, ...options }
   }
 
   private randomSprite(): string {
-    return this.options.sprites[randomInt(0, this.options.sprites.length - 1)]
+    return this.options.files[randomInt(0, this.options.files.length - 1)]
   }
 
   start(): void {
@@ -59,12 +59,12 @@ class Flying {
   }
 
   clear(): void {
-    this.entity.forEach(v => v.img.remove())
-    this.entity = []
+    this.flyingEntitys.forEach(v => v.img.remove())
+    this.flyingEntitys = []
   }
 
-  private initSprites(): void {
-    while (this.entity.length !== this.options.count) {
+  private entity(): void {
+    while (this.flyingEntitys.length !== this.options.count) {
       const img = new Image()
       img.src = this.randomSprite()
       img.style.userSelect = 'none'
@@ -73,7 +73,7 @@ class Flying {
       img.style.opacity = this.options.opacity.toString()
       document.body.appendChild(img)
 
-      this.entity.push({
+      this.flyingEntitys.push({
         dx: 0,
         x: Math.random() * (this.matrix.canvas.width - 50),
         y: Math.random() * this.matrix.canvas.height,
@@ -81,7 +81,7 @@ class Flying {
         stepX: 0.02 + Math.random() / 10,
         stepY: 0.7 + Math.random(),
         rotate: randomInt(this.options.rotate[0], this.options.rotate[1]),
-        img: img
+        img
       })
     }
   }
@@ -89,27 +89,28 @@ class Flying {
   private render(): void {
     if (!this.matrix.ctx || !this.matrix.running) return
 
-    this.initSprites()
+    this.entity()
 
-    for (let i = 0; i < this.entity.length; ++i) {
-      this.entity[i].y += this.entity[i].stepY
+    const entity = this.flyingEntitys
+    for (let i = 0; i < entity.length; ++i) {
+      entity[i].y += entity[i].stepY
 
-      if (this.entity[i].y > this.matrix.canvas.height - 50) {
-        this.entity[i].x = Math.random() * (this.matrix.canvas.width - this.entity[i].am - 50)
-        this.entity[i].y = 0
-        this.entity[i].stepX = 0.02 + Math.random() / 10
-        this.entity[i].stepY = 0.7 + Math.random()
+      if (entity[i].y > this.matrix.canvas.height - 50) {
+        entity[i].x = Math.random() * (this.matrix.canvas.width - entity[i].am - 50)
+        entity[i].y = 0
+        entity[i].stepX = 0.02 + Math.random() / 10
+        entity[i].stepY = 0.7 + Math.random()
       }
 
-      this.entity[i].dx += this.entity[i].stepX
-      this.entity[i].img.style.top = this.entity[i].y + 'px'
-      this.entity[i].img.style.left = (this.entity[i].x + this.entity[i].am * Math.sin(this.entity[i].dx)) + 'px'
+      entity[i].dx += entity[i].stepX
+      entity[i].img.style.top = entity[i].y + 'px'
+      entity[i].img.style.left = (entity[i].x + entity[i].am * Math.sin(entity[i].dx)) + 'px'
 
       if (!(!this.options.rotate[0] && !this.options.rotate[1])) {
-        this.entity[i].img.style.transform = 'rotate(' + (this.entity[i].rotate + 30 * Math.sin(this.entity[i].dx)) + 'deg)'
+        entity[i].img.style.transform = 'rotate(' + (entity[i].rotate + 30 * Math.sin(entity[i].dx)) + 'deg)'
       }
     }
   }
 }
 
-export { Flying, FlyingsOptions }
+export { Entity, EntityOptions }

@@ -11,7 +11,7 @@ interface SplashesOptions {
 
 class Splash {
   private matrix: Matrix
-  private interval: NodeJS.Timeout | null
+  private interval: ReturnType<typeof setInterval> | null
   private options: Required<SplashesOptions> = {
     interval: 200,
     enable: false,

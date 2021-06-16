@@ -1,17 +1,17 @@
 import { randomInt } from './utils'
-import { Flying, FlyingsOptions } from './flying'
+import { Entity, EntityOptions } from './entity'
 import { Splash, SplashesOptions } from './splash'
 
 type HTMLTarget = HTMLElement | Element
 
 interface MatrixOptions {
-  target: HTMLTarget
   font: Font
-  symbols?: () => string
-  splashes?: SplashesOptions
-  flyings?: FlyingsOptions
+  symbol?: () => string
+  splash?: SplashesOptions
+  entity?: EntityOptions
   autoresize?: boolean
   tracesCount?: number
+  fpsMonitor?: boolean
 }
 
 interface Font {
@@ -30,7 +30,7 @@ class Matrix {
   public ctx: CanvasRenderingContext2D
   public canvas: HTMLCanvasElement
   public font: FontFace
-  public flying: Flying
+  public entity: Entity
   public splash: Splash
   public target: HTMLTarget
   public fontSize: number
@@ -41,21 +41,21 @@ class Matrix {
   public traces: number[] = []
   public symbols: (() => string) | undefined
 
-  constructor(options: MatrixOptions) {
-    this.target = options.target
+  constructor(container: HTMLTarget, opts: MatrixOptions) {
+    this.target = container
     this.canvas = document.createElement('canvas')
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
     this.target.appendChild(this.canvas)
 
-    this.flying = new Flying(this, options.flyings)
-    this.splash = new Splash(this, options.splashes)
-    this.font = new FontFace(options.font.family, `url(${options.font.file})`)
+    this.entity = new Entity(this, opts.entity)
+    this.splash = new Splash(this, opts.splash)
+    this.font = new FontFace(opts.font.family, `url(${opts.font.file})`)
 
-    this.fontSize = options.font.size
-    this.tracesCount = options.tracesCount || 300
-    this.autoresize = options.autoresize ?? true
-    this.symbols = options.symbols
-    this.colors = options.font.colors || [
+    this.fontSize = opts.font.size
+    this.tracesCount = opts.tracesCount || 300
+    this.autoresize = opts.autoresize ?? true
+    this.symbols = opts.symbol
+    this.colors = opts.font.colors || [
       '#225400',
       '#66FF00',
       '#155400',
@@ -84,7 +84,7 @@ class Matrix {
       this.running = true
       this.render()
       this.splash.start()
-      this.flying.start()
+      this.entity.start()
     }).catch(() => {
       throw new Error('Failed loading `font.file`')
     })
@@ -104,7 +104,7 @@ class Matrix {
     this.ctx.lineTo(0, 0)
     this.ctx.stroke()
     this.ctx.restore()
-    this.flying.clear()
+    this.entity.clear()
   }
 
   pause(): void {
@@ -137,7 +137,7 @@ class Matrix {
     window.requestAnimationFrame(() => this.render())
 
     this.ctx.fillStyle = 'rgba(0, 0, 0, .05)'
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.fillRect(0, 0, this.canvas.width - window.devicePixelRatio, this.canvas.height - window.devicePixelRatio)
     this.ctx.fillStyle = this.randomColor()
     this.ctx.font = `${this.fontSize}pt ${this.font.family}`
 
@@ -155,4 +155,4 @@ class Matrix {
   }
 }
 
-export { Matrix, MatrixOptions }
+export { Matrix, MatrixOptions, HTMLTarget }
