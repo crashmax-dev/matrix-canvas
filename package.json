@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "description": "canvas-matrix2d",
     "scripts": {
-        "dev": "cross-env NODE_ENV=development webpack-dev-server --config-name main --host localhost --watch-poll",
-        "build": "cross-env NODE_ENV=production webpack --progress",
+        "dev": "webpack server --node-env development",
+        "build": "webpack --node-env production --progress",
         "lint": "eslint src/**/*.ts",
         "lint:fix": "eslint src/**/*.ts --fix",
         "test": "jest"
@@ -14,22 +14,30 @@
         "email": "sys@crashmax.ru",
         "name": "Vitalij Ryndin"
     },
+    "keywords": [
+        "matrix",
+        "canvas"
+    ],
     "license": "MIT",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/crashmax-dev/canvas-matrix2d.git"
     },
+    "bugs": {
+        "url": "https://github.com/crashmax-dev/canvas-matrix2d/issues"
+    },
+    "homepage": "https://crashmax-dev.github.io/canvas-matrix2d/",
     "dependencies": {
         "stats.js": "^0.17.0"
     },
     "devDependencies": {
         "@babel/core": "^7.14.3",
         "@babel/preset-env": "^7.14.4",
+        "@types/copy-webpack-plugin": "^8.0.0",
         "@types/css-font-loading-module": "0.0.4",
-        "@types/jest": "^26.0.23",
         "@types/stats.js": "^0.17.0",
-        "@types/webpack": "^4.41.22",
-        "@types/webpack-dev-server": "^3.11.0",
+        "@types/webpack": "^4.41.29",
+        "@types/webpack-dev-server": "^3.11.4",
         "@typescript-eslint/eslint-plugin": "^4.26.1",
         "@typescript-eslint/parser": "^4.26.1",
         "babel-loader": "^8.2.2",
@@ -37,13 +45,11 @@
         "copy-webpack-plugin": "^6.2.1",
         "cross-env": "^7.0.3",
         "eslint": "^7.28.0",
-        "jest": "^27.0.4",
-        "ts-jest": "^27.0.3",
         "ts-loader": "^8.0.14",
         "ts-node": "^10.0.0",
         "typescript": "^4.3.2",
-        "webpack": "^4.44.2",
-        "webpack-cli": "^3.3.12",
-        "webpack-dev-server": "^3.11.0"
+        "webpack": "^4.46.0",
+        "webpack-cli": "^4.7.2",
+        "webpack-dev-server": "^3.11.2"
     }
 }
