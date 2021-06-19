@@ -1,14 +1,11 @@
 {
-  "env": {
-    "node": true
-  },
   "parser": "@typescript-eslint/parser",
   "extends": [
     "plugin:@typescript-eslint/recommended"
   ],
   "ignorePatterns": [
-    "dist/*",
-    "public/*"
+    "dist",
+    "public"
   ],
   "parserOptions": {
     "ecmaVersion": 12,

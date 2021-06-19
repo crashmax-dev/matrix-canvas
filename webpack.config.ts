@@ -1,12 +1,14 @@
-const path = require('path')
-const webpack = require('webpack')
+import path from 'path'
+import webpack from 'webpack'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+
 const outputPath = path.resolve(__dirname, 'dist')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   mode: process.env.NODE_ENV,
   target: 'web',
+  devtool: 'source-map',
   entry: path.join(__dirname, 'src/index.ts'),
   output: {
     path: outputPath,
@@ -67,4 +69,4 @@ module.exports = {
       ]
     })
   ]
-}
+} as webpack.Configuration
