@@ -7,67 +7,11 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, shrink-to-fit=no">
   <title>Matrix</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-size: 16px;
-      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      overflow: hidden;
-      background: #000;
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+  <script src="matrix.js"></script>
 </head>
 
 <body>
-  <script src="matrix.js"></script>
-  <script>
-    const matrix = new Matrix(document.body, {
-      symbol: () => Math.random() > 0.5 ? '1' : '0',
-      font: {
-        family: 'Matrix',
-        file: document.location.href + 'matrix.regular.ttf',
-        size: 11
-      },
-      splash: {
-        size: 40,
-        enable: true,
-        texts: [
-          'Hello, World!',
-          'EZ Clap',
-          'Matrix'
-        ],
-        colors: [
-          '#225400',
-          '#66FF00',
-          '#155400'
-        ]
-      },
-      entity: {
-        files: [
-          'images/DANKHACKERMANS.gif',
-          'images/HACKERJAMS.gif',
-          'images/HACKERMANS.gif',
-          'images/PEPEGAHACKER.gif',
-          'images/pepeLaughing.gif'
-        ],
-        opacity: 0.5,
-        rotate: [0, 0],
-        width: [24, 32],
-        speed: 45
-      },
-      fpsMonitor: true
-    })
-
-    console.log(matrix)
-
-    matrix.start()
-  </script>
+  <script src="main.js"></script>
 </body>
 
 </html>
