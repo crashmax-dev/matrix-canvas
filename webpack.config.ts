@@ -8,7 +8,6 @@ const outputPath = path.resolve(__dirname, 'dist')
 module.exports = {
   mode: process.env.NODE_ENV,
   target: 'web',
-  devtool: 'source-map',
   entry: path.join(__dirname, 'src/index.ts'),
   output: {
     path: outputPath,
