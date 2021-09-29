@@ -1,4 +1,3 @@
-/// <reference types="css-font-loading-module" />
 import { Entity, EntityOptions } from './entity';
 import { Splash, SplashesOptions } from './splash';
 declare type HTMLTarget = HTMLElement | Element;
