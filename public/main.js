@@ -2,7 +2,7 @@ const matrix = new Matrix(document.body, {
   symbol: () => Math.random() > 0.5 ? '1' : '0',
   font: {
     family: 'Matrix',
-    file: document.location.href + 'matrix.regular.ttf',
+    file: 'matrix.regular.ttf',
     size: 11
   },
   splash: {
