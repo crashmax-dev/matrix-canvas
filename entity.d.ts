@@ -1,23 +1,24 @@
 import { Matrix } from './matrix';
-interface EntityOptions {
+export interface EntityOptions {
     files: string[];
-    width?: [number, number];
+    size?: [number, number];
     rotate?: [number, number];
     opacity?: number;
     speed?: number;
     count?: number;
 }
-declare class Entity {
+export declare class Entity {
     private matrix;
     private options;
-    private flyingEntitys;
+    private flyingEntities;
+    private images;
     private interval;
     constructor(matrix: Matrix, options: EntityOptions | undefined);
-    private randomSprite;
+    private loadImages;
+    private randomImage;
     start(): void;
     stop(): void;
     clear(): void;
-    private entity;
+    private createEntity;
     private render;
 }
-export { Entity, EntityOptions };

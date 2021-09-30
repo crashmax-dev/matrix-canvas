@@ -1,7 +1,7 @@
-import { HTMLTarget, MatrixOptions } from './matrix';
+import { MatrixOptions } from './matrix';
 declare class Matrix {
     private _;
-    constructor(container: HTMLTarget, opts: MatrixOptions);
+    constructor(container: HTMLElement, options: MatrixOptions);
     get isRunning(): boolean;
     start(): void;
     stop(): void;

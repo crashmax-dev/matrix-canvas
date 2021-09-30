@@ -1,14 +1,12 @@
 import { Entity, EntityOptions } from './entity';
 import { Splash, SplashesOptions } from './splash';
-declare type HTMLTarget = HTMLElement | Element;
-interface MatrixOptions {
+export interface MatrixOptions {
     font: Font;
-    symbol?: () => string;
+    symbols?: () => string;
     splash?: SplashesOptions;
     entity?: EntityOptions;
     autoresize?: boolean;
     tracesCount?: number;
-    fpsMonitor?: boolean;
 }
 interface Font {
     family: string;
@@ -16,13 +14,13 @@ interface Font {
     size: number;
     colors: string[];
 }
-declare class Matrix {
+export declare class Matrix {
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     font: FontFace;
     entity: Entity;
     splash: Splash;
-    target: HTMLTarget;
+    target: HTMLElement;
     fontSize: number;
     tracesCount: number;
     autoresize: boolean;
@@ -30,7 +28,7 @@ declare class Matrix {
     colors: string[];
     traces: number[];
     symbols: (() => string) | undefined;
-    constructor(container: HTMLTarget, opts: MatrixOptions);
+    constructor(container: HTMLElement, opts: MatrixOptions);
     start(): void;
     stop(): void;
     clear(): void;
@@ -40,4 +38,4 @@ declare class Matrix {
     private initTraces;
     private render;
 }
-export { Matrix, MatrixOptions, HTMLTarget };
+export {};

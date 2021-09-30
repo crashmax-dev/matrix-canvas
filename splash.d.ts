@@ -1,19 +1,20 @@
 import { Matrix } from './matrix';
-interface SplashesOptions {
+export interface SplashesOptions {
     interval?: number;
     enable: boolean;
     colors: string[];
     texts: string[];
     size?: number;
 }
-declare class Splash {
+export declare class Splash {
     private matrix;
     private interval;
     private options;
+    private isVisible;
     constructor(matrix: Matrix, options: SplashesOptions | undefined);
     private randomSplash;
+    private updateVisibleState;
     start(): void;
     stop(): void;
     private render;
 }
-export { Splash, SplashesOptions };
