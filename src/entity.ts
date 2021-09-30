@@ -91,10 +91,8 @@ export class Entity {
       this.flyingEntities.push({
         dx: 0,
         x: Math.random() * (this.matrix.canvas.width - this.options.size[0]),
-        y: Math.random() * this.matrix.canvas.height,
+        y: Math.random() > 0.8 ? -this.options.size[0] : Math.random() * this.matrix.canvas.height,
         am: Math.random() * 20,
-        // flying from top
-        // am: -this.options.size[0],
         stepX: 0.02 + Math.random() / 10,
         stepY: 0.7 + Math.random(),
         rotate: randomInt(this.options.rotate[0], this.options.rotate[1]),
