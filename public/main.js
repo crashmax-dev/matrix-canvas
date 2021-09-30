@@ -1,9 +1,10 @@
 const matrix = new Matrix(document.body, {
-  symbol: () => Math.random() > 0.5 ? '1' : '0',
+  // symbols: () => Math.random() > 0.5 ? '1' : '0',
+  // symbols: () => 'ඞ',
   font: {
     family: 'Matrix',
     file: 'matrix.regular.ttf',
-    size: 11
+    size: 12
   },
   splash: {
     size: 40,
@@ -28,11 +29,11 @@ const matrix = new Matrix(document.body, {
       'images/pepeLaughing.gif'
     ],
     opacity: 0.5,
-    rotate: [0, 0],
-    width: [24, 32],
-    speed: 45
-  },
-  fpsMonitor: true
+    rotate: [-10, 10],
+    // min max width
+    size: [32, 32],
+    speed: 30
+  }
 })
 
 console.log(matrix)

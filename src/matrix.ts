@@ -2,16 +2,13 @@ import { randomInt } from './utils'
 import { Entity, EntityOptions } from './entity'
 import { Splash, SplashesOptions } from './splash'
 
-type HTMLTarget = HTMLElement | Element
-
-interface MatrixOptions {
+export interface MatrixOptions {
   font: Font
-  symbol?: () => string
+  symbols?: () => string
   splash?: SplashesOptions
   entity?: EntityOptions
   autoresize?: boolean
   tracesCount?: number
-  fpsMonitor?: boolean
 }
 
 interface Font {
@@ -26,13 +23,13 @@ interface Sizes {
   height?: number
 }
 
-class Matrix {
+export class Matrix {
   public ctx: CanvasRenderingContext2D
   public canvas: HTMLCanvasElement
   public font: FontFace
   public entity: Entity
   public splash: Splash
-  public target: HTMLTarget
+  public target: HTMLElement
   public fontSize: number
   public tracesCount: number
   public autoresize: boolean
@@ -41,7 +38,7 @@ class Matrix {
   public traces: number[] = []
   public symbols: (() => string) | undefined
 
-  constructor(container: HTMLTarget, opts: MatrixOptions) {
+  constructor(container: HTMLElement, opts: MatrixOptions) {
     this.target = container
     this.canvas = document.createElement('canvas')
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
@@ -52,9 +49,9 @@ class Matrix {
     this.font = new FontFace(opts.font.family, `url(${opts.font.file})`)
 
     this.fontSize = opts.font.size
-    this.tracesCount = opts.tracesCount || 300
+    this.tracesCount = Math.round(window.innerWidth / 10)
     this.autoresize = opts.autoresize ?? true
-    this.symbols = opts.symbol
+    this.symbols = opts.symbols
     this.colors = opts.font.colors || [
       '#225400',
       '#66FF00',
@@ -143,7 +140,7 @@ class Matrix {
 
     this.traces.map((y, i) => {
       const symbol = this.symbols?.call(this) || String.fromCharCode(100 + 28 * Math.random())
-      const x = (i * 10) + 10
+      const x = (i * this.fontSize) + this.fontSize
       this.ctx.fillText(symbol, x, y)
 
       if (y > 100 + Math.random() * 10000) {
@@ -154,5 +151,3 @@ class Matrix {
     })
   }
 }
-
-export { Matrix, MatrixOptions, HTMLTarget }

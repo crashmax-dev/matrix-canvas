@@ -1,10 +1,10 @@
-import { HTMLTarget, Matrix as _Matrix, MatrixOptions } from './matrix'
+import { Matrix as _Matrix, MatrixOptions } from './matrix'
 
 class Matrix {
   private _: _Matrix
 
-  constructor(container: HTMLTarget, opts: MatrixOptions) {
-    this._ = new _Matrix(container, opts)
+  constructor(container: HTMLElement, options: MatrixOptions) {
+    this._ = new _Matrix(container, options)
   }
 
   get isRunning(): boolean {

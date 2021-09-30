@@ -1,9 +1,9 @@
 import { Matrix } from './matrix'
-import { randomInt } from './utils/randomInt'
+import { randomInt } from './utils'
 
-interface EntityOptions {
+export interface EntityOptions {
   files: string[]
-  width?: [number, number]
+  size?: [number, number]
   rotate?: [number, number]
   opacity?: number
   speed?: number
@@ -21,26 +21,41 @@ interface FlyingEntities {
   rotate: number
 }
 
-class Entity {
+export class Entity {
   private matrix: Matrix
   private options: Required<EntityOptions> = {
     files: [],
-    width: [24, 32],
+    size: [32, 32],
     rotate: [-30, 30],
     opacity: 0.5,
-    speed: 33,
+    speed: 30,
     count: 30
   }
-  private flyingEntitys: FlyingEntities[] = []
+  private flyingEntities: FlyingEntities[] = []
+  private images: HTMLImageElement[] = []
   private interval: ReturnType<typeof setInterval> | null
 
   constructor(matrix: Matrix, options: EntityOptions | undefined) {
     this.matrix = matrix
     this.options = { ...this.options, ...options }
+    this.loadImages()
   }
 
-  private randomSprite(): string {
-    return this.options.files[randomInt(0, this.options.files.length - 1)]
+  private async loadImages(): Promise<void> {
+    for (const file of this.options.files) {
+      this.images.push(
+        await new Promise((resolve, reject) => {
+          const image = new Image(this.options.size[0], this.options.size[1])
+          image.src = file
+          image.onload = () => resolve(image)
+          image.onerror = reject
+        })
+      )
+    }
+  }
+
+  private randomImage(): string {
+    return this.images[randomInt(0, this.images.length - 1)].src
   }
 
   start(): void {
@@ -59,25 +74,27 @@ class Entity {
   }
 
   clear(): void {
-    this.flyingEntitys.forEach(v => v.img.remove())
-    this.flyingEntitys = []
+    this.flyingEntities.forEach(entity => entity.img.remove())
+    this.flyingEntities = []
   }
 
-  private entity(): void {
-    while (this.flyingEntitys.length !== this.options.count) {
+  private createEntity(): void {
+    while (this.flyingEntities.length !== this.options.count) {
       const img = new Image()
-      img.src = this.randomSprite()
+      img.src = this.randomImage()
       img.style.userSelect = 'none'
       img.style.position = 'absolute'
-      img.style.width = randomInt(this.options.width[0], this.options.width[0]) + 'px'
+      img.style.width = randomInt(this.options.size[0], this.options.size[1]) / window.devicePixelRatio + 'px'
       img.style.opacity = this.options.opacity.toString()
       document.body.appendChild(img)
 
-      this.flyingEntitys.push({
+      this.flyingEntities.push({
         dx: 0,
-        x: Math.random() * (this.matrix.canvas.width - 50),
+        x: Math.random() * (this.matrix.canvas.width - this.options.size[0]),
         y: Math.random() * this.matrix.canvas.height,
         am: Math.random() * 20,
+        // flying from top
+        // am: -this.options.size[0],
         stepX: 0.02 + Math.random() / 10,
         stepY: 0.7 + Math.random(),
         rotate: randomInt(this.options.rotate[0], this.options.rotate[1]),
@@ -88,15 +105,16 @@ class Entity {
 
   private render(): void {
     if (!this.matrix.ctx || !this.matrix.running) return
+    if (this.images.length !== this.options.files.length) return
 
-    this.entity()
+    this.createEntity()
 
-    const entity = this.flyingEntitys
+    const entity = this.flyingEntities
     for (let i = 0; i < entity.length; ++i) {
       entity[i].y += entity[i].stepY
 
-      if (entity[i].y > this.matrix.canvas.height - 50) {
-        entity[i].x = Math.random() * (this.matrix.canvas.width - entity[i].am - 50)
+      if (entity[i].y > this.matrix.canvas.height + this.options.size[0]) {
+        entity[i].x = Math.random() * (this.matrix.canvas.width - entity[i].am - this.options.size[0])
         entity[i].y = 0
         entity[i].stepX = 0.02 + Math.random() / 10
         entity[i].stepY = 0.7 + Math.random()
@@ -112,5 +130,3 @@ class Entity {
     }
   }
 }
-
-export { Entity, EntityOptions }
