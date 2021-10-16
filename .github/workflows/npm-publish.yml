@@ -16,7 +16,6 @@ jobs:
           registry: https://registry.npmjs.org/
           token: ${{ secrets.NPM_TOKEN }}
 
-jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
