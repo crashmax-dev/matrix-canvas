@@ -9,8 +9,8 @@
     "dist/matrix.d.ts"
   ],
   "scripts": {
-    "dev": "webpack server --config webpack/webpack.dev.js",
-    "build": "webpack --progress --config webpack/webpack.prod.js",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && webpack server --config webpack/webpack.dev.js",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && webpack --progress --config webpack/webpack.prod.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix"
   },
