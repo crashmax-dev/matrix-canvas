@@ -1,7 +1,6 @@
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common')
 const { port, paths } = require('./webpack.config')
-const { HotModuleReplacementPlugin } = require('webpack')
 
 module.exports = merge(common, {
   mode: 'development',
@@ -13,8 +12,5 @@ module.exports = merge(common, {
     static: {
       directory: paths.public
     }
-  },
-  plugins: [
-    new HotModuleReplacementPlugin()
-  ]
+  }
 })
