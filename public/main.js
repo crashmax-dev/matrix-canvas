@@ -1,3 +1,6 @@
+/**
+ * canvas-matrix2d
+ */
 const matrix = new Matrix(document.body, {
   // symbols: () => Math.random() > 0.5 ? '1' : '0',
   // symbols: () => 'ඞ',
@@ -37,5 +40,27 @@ const matrix = new Matrix(document.body, {
 })
 
 console.log(matrix)
-
 matrix.start()
+
+/**
+ * stats.js
+ */
+let count_fireworks = document.querySelector('.matrix-counters'),
+  update,
+  stats
+
+stats = new Stats
+stats.setMode(0)
+stats.domElement.style.position = 'fixed'
+stats.domElement.style.left = '5px'
+stats.domElement.style.top = '5px'
+stats.domElement.id = 'stats'
+document.body.appendChild(stats.domElement)
+
+update = () => {
+  stats.begin()
+  stats.end()
+  requestAnimationFrame(update)
+}
+
+requestAnimationFrame(update)
