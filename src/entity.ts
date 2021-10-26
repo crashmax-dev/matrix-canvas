@@ -31,7 +31,7 @@ export class Entity {
     rotate: [-30, 30],
     opacity: 0.5,
     speed: 30,
-    count: 30
+    count: 15
   }
   private flyingEntities: FlyingEntities[] = []
   private images: HTMLImageElement[] = []
@@ -72,6 +72,7 @@ export class Entity {
     if (this.interval) {
       clearInterval(this.interval)
       this.interval = null
+      this.clear()
     }
   }
 

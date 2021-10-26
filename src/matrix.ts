@@ -46,6 +46,7 @@ export class Matrix {
     this.canvas = document.createElement('canvas')
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
     this.target.appendChild(this.canvas)
+    this.setSize()
 
     this.entity = new Entity(this, opts.entity)
     this.splash = new Splash(this, opts.splash)
@@ -69,12 +70,9 @@ export class Matrix {
     ]
 
     if (this.autoresize) {
-      window.addEventListener('resize', () => {
-        this.setSize()
-      })
+      this.handleResize = this.handleResize.bind(this)
+      window.addEventListener('resize', this.handleResize, false)
     }
-
-    this.setSize()
   }
 
   get isRunning(): boolean {
@@ -96,6 +94,7 @@ export class Matrix {
 
   stop(): void {
     this.running = false
+    window.removeEventListener('resize', this.handleResize, false)
     this.clear()
   }
 
@@ -108,7 +107,13 @@ export class Matrix {
     this.ctx.lineTo(0, 0)
     this.ctx.stroke()
     this.ctx.restore()
-    this.entity.clear()
+
+    if (this.isRunning) {
+      this.entity.clear()
+    } else {
+      this.entity.stop()
+      this.splash.stop()
+    }
   }
 
   pause(): void {
@@ -120,17 +125,19 @@ export class Matrix {
     return this.colors[randomInt(0, this.colors.length - 1)]
   }
 
-  private setSize({
-    width = this.target.clientWidth,
-    height = this.target.clientHeight
-  }: Sizes = {}): void {
-    this.canvas.width = width
-    this.canvas.height = height
+  handleResize(): void {
+    this.setSize()
+    this.clear()
+  }
+
+  private setSize(): void {
+    this.canvas.width = this.target.clientWidth
+    this.canvas.height = this.target.clientHeight
   }
 
   private initTraces(): void {
     while (this.traces.length !== this.tracesCount) {
-      this.traces.push(randomInt(0, 1000))
+      this.traces.push(randomInt(0, window.innerHeight))
     }
   }
 

@@ -41,7 +41,8 @@ const matrixConfig = {
     opacity: 0.5,
     rotate: [-10, 10],
     size: 32,
-    speed: 30
+    speed: 30,
+    count: 15
   }
 }
 
