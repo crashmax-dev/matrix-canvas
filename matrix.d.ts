@@ -1,5 +1,5 @@
-import { EntityOptions } from './entity';
-import { SplashOptions } from './splash';
+import { Entity, EntityOptions } from './entity';
+import { Splash, SplashOptions } from './splash';
 export type { SplashOptions, EntityOptions };
 export interface MatrixOptions {
     font: Font;
@@ -23,8 +23,8 @@ export declare class Matrix {
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     font: FontFace;
-    private _entity;
-    private _splash;
+    entity: Entity;
+    splash: Splash;
     private target;
     private fontSize;
     private tracesCount;
@@ -33,8 +33,6 @@ export declare class Matrix {
     private colors;
     private traces;
     private symbols;
-    private splash;
-    private entity;
     constructor(container: HTMLElement, opts: MatrixOptions);
     get isRunning(): boolean;
     start(): void;

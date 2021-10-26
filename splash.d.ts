@@ -1,7 +1,7 @@
 import { Matrix } from './matrix';
 export interface SplashOptions {
     interval?: number;
-    enable: boolean;
+    enabled: boolean;
     colors: string[];
     texts: string[];
     size?: number;
