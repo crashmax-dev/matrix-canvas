@@ -25,6 +25,7 @@ const matrixConfig = {
     ]
   },
   entity: {
+    enabled: true,
     files: [
       'images/DANKHACKERMANS.gif',
       'images/HACKERJAMS.gif',
@@ -68,9 +69,6 @@ update = () => {
 requestAnimationFrame(update)
 
 /**
- * dat.gui
- */
-/**
  * dat.gui.js
  */
 const fpsMonitor = document.querySelector('#stats')
@@ -104,20 +102,25 @@ folders.entity.add(entity, 'opacity', 0.1, 1).onChange(opacity => {
   matrix.setOptions({ entity: { opacity } })
 })
 
-folders.entity.add(entity, 'speed', 10, 60, 1).onChange(speed => {
+folders.entity.add(entity, 'speed', 10, 60, 1).name('tick speed').onChange(speed => {
   matrix.setOptions({ entity: { speed } })
   matrix._.entity.stop()
   matrix._.entity.start()
+})
+
+folders.entity.add(entity, 'enabled').onChange(enabled => {
+  matrix.setOptions({ entity: { enabled } })
+  matrix._.entity.clear()
 })
 
 folders.splash.add(splash, 'size', 16, 96, 1).onChange(size => {
   matrix.setOptions({ splash: { size } })
 })
 
-folders.splash.add(splash, 'enabled').onChange(enabled => {
-  matrix.setOptions({ splash: { enabled } })
+folders.splash.add(splash, 'interval', 100, 2000, 1).name('tick speed').onChange(interval => {
+  matrix.setOptions({ splash: { interval } })
 })
 
-folders.splash.add(splash, 'interval', 100, 2000, 1).onChange(interval => {
-  matrix.setOptions({ splash: { interval } })
+folders.splash.add(splash, 'enabled').onChange(enabled => {
+  matrix.setOptions({ splash: { enabled } })
 })

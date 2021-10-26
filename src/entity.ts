@@ -3,6 +3,7 @@ import { randomInt } from './utils'
 
 export interface EntityOptions {
   files: string[]
+  enabled?: boolean
   size?: number
   rotate?: [number, number]
   opacity?: number
@@ -25,6 +26,7 @@ export class Entity {
   private matrix: Matrix
   public options: Required<EntityOptions> = {
     files: [],
+    enabled: true,
     size: 32,
     rotate: [-30, 30],
     opacity: 0.5,
@@ -100,7 +102,7 @@ export class Entity {
   }
 
   private render(): void {
-    if (!this.matrix.ctx || !this.matrix.isRunning) return
+    if (!this.matrix.ctx || !this.options.enabled) return
     if (this.images.length !== this.options.files.length) return
 
     this.createEntity()
