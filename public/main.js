@@ -1,5 +1,5 @@
 const query = new URLSearchParams(window.location.search)
-const symbols = query.get('symbols').split(',')
+const symbols = query.get('symbols')?.split(',') || []
 const randomInt = (min, max) => Math.floor(min + Math.random() * (max + 1 - min))
 
 /**
