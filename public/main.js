@@ -1,9 +1,14 @@
+const query = new URLSearchParams(window.location.search)
+const symbols = query.get('symbols').split(',')
+const randomInt = (min, max) => Math.floor(min + Math.random() * (max + 1 - min))
+
 /**
  * canvas-matrix2d
  */
 const matrixConfig = {
   // symbols: () => Math.random() > 0.5 ? '1' : '0',
   // symbols: () => 'ඞ',
+  symbols: () => symbols[randomInt(0, symbols.length - 1)],
   font: {
     family: 'Matrix',
     file: 'matrix.regular.ttf',
