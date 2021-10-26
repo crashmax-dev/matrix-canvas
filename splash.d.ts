@@ -1,5 +1,5 @@
 import { Matrix } from './matrix';
-export interface SplashesOptions {
+export interface SplashOptions {
     interval?: number;
     enable: boolean;
     colors: string[];
@@ -9,9 +9,9 @@ export interface SplashesOptions {
 export declare class Splash {
     private matrix;
     private interval;
-    private options;
+    options: Required<SplashOptions>;
     private isVisible;
-    constructor(matrix: Matrix, options: SplashesOptions | undefined);
+    constructor(matrix: Matrix, options: SplashOptions | undefined);
     private randomSplash;
     private updateVisibleState;
     start(): void;

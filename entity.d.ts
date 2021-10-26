@@ -9,7 +9,7 @@ export interface EntityOptions {
 }
 export declare class Entity {
     private matrix;
-    private options;
+    options: Required<EntityOptions>;
     private flyingEntities;
     private images;
     private interval;
