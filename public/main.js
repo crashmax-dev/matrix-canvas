@@ -1,7 +1,7 @@
 /**
  * canvas-matrix2d
  */
-const matrix = new Matrix(document.body, {
+const matrixConfig = {
   // symbols: () => Math.random() > 0.5 ? '1' : '0',
   // symbols: () => 'ඞ',
   font: {
@@ -11,7 +11,8 @@ const matrix = new Matrix(document.body, {
   },
   splash: {
     size: 40,
-    enable: true,
+    interval: 150,
+    enabled: true,
     texts: [
       'Hello, World!',
       'EZ Clap',
@@ -33,12 +34,13 @@ const matrix = new Matrix(document.body, {
     ],
     opacity: 0.5,
     rotate: [-10, 10],
-    // min max width
-    size: [32, 32],
+    size: 32,
     speed: 30
   }
-})
+}
 
+const { splash, entity } = matrixConfig
+const matrix = new Matrix(document.body, matrixConfig)
 console.log(matrix)
 matrix.start()
 
@@ -64,3 +66,58 @@ update = () => {
 }
 
 requestAnimationFrame(update)
+
+/**
+ * dat.gui
+ */
+/**
+ * dat.gui.js
+ */
+const fpsMonitor = document.querySelector('#stats')
+
+const gui = new dat.GUI({
+  closed: true,
+  autoPlace: true,
+  width: window.outerWidth > 360 ? 320 : 260
+})
+
+const folders = {
+  entity: gui.addFolder('entity'),
+  splash: gui.addFolder('splash')
+}
+
+folders.entity.addFolder('rotate')
+
+folders.entity.add(entity, 'size', 16, 64, 1).onChange(size => {
+  matrix.setOptions({ entity: { size } })
+})
+
+folders.entity.__folders.rotate.add(entity.rotate, '0', -360, 360, 1).name('min deg').onChange(rotate => {
+  matrix.setOptions({ entity: { rotate: [rotate, matrix._.entity.options.rotate[1]] } })
+})
+
+folders.entity.__folders.rotate.add(entity.rotate, '1', -360, 360, 1).name('max deg').onChange(rotate => {
+  matrix.setOptions({ entity: { rotate: [matrix._.entity.options.rotate[0], rotate] } })
+})
+
+folders.entity.add(entity, 'opacity', 0.1, 1).onChange(opacity => {
+  matrix.setOptions({ entity: { opacity } })
+})
+
+folders.entity.add(entity, 'speed', 10, 60, 1).onChange(speed => {
+  matrix.setOptions({ entity: { speed } })
+  matrix._.entity.stop()
+  matrix._.entity.start()
+})
+
+folders.splash.add(splash, 'size', 16, 96, 1).onChange(size => {
+  matrix.setOptions({ splash: { size } })
+})
+
+folders.splash.add(splash, 'enabled').onChange(enabled => {
+  matrix.setOptions({ splash: { enabled } })
+})
+
+folders.splash.add(splash, 'interval', 100, 2000, 1).onChange(interval => {
+  matrix.setOptions({ splash: { interval } })
+})

@@ -32,6 +32,16 @@ class Matrix {
   }
 
   setOptions(options: Partial<MatrixDynamicOptions>): void {
+    if (options.entity) {
+      Object.assign(this._.entity.options, options.entity)
+      delete options.entity
+    }
+
+    if (options.splash) {
+      Object.assign(this._.splash.options, options.splash)
+      delete options.splash
+    }
+
     Object.assign(this._, options)
   }
 }

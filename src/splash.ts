@@ -3,7 +3,7 @@ import { randomInt } from './utils'
 
 export interface SplashOptions {
   interval?: number
-  enable: boolean
+  enabled: boolean
   colors: string[]
   texts: string[]
   size?: number
@@ -14,7 +14,7 @@ export class Splash {
   private interval: ReturnType<typeof setInterval> | null
   public options: Required<SplashOptions> = {
     interval: 200,
-    enable: false,
+    enabled: false,
     colors: [],
     texts: [],
     size: 40
@@ -55,6 +55,9 @@ export class Splash {
     if (!this.matrix.ctx || !this.matrix.isRunning) return
 
     this.matrix.ctx.save()
+
+    if (!this.options.enabled) return
+
     this.matrix.ctx.fillStyle = this.matrix.randomColor()
     this.matrix.ctx.font = `${this.options.size / window.devicePixelRatio}pt ${this.matrix.font.family}`
     this.matrix.ctx.rotate(randomInt(0, 360))

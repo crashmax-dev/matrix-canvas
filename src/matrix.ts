@@ -29,9 +29,9 @@ export class Matrix {
   public ctx: CanvasRenderingContext2D
   public canvas: HTMLCanvasElement
   public font: FontFace
+  public entity: Entity
+  public splash: Splash
 
-  private _entity: Entity
-  private _splash: Splash
   private target: HTMLElement
   private fontSize: number
   private tracesCount: number
@@ -41,19 +41,14 @@ export class Matrix {
   private traces: number[] = []
   private symbols: (() => string) | undefined
 
-  private splash: Partial<SplashOptions>
-  private entity: Partial<EntityOptions>
-
   constructor(container: HTMLElement, opts: MatrixOptions) {
     this.target = container
     this.canvas = document.createElement('canvas')
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
     this.target.appendChild(this.canvas)
 
-    this._entity = new Entity(this, opts.entity)
-    this.entity = this._entity.options
-    this._splash = new Splash(this, opts.splash)
-    this.splash = this._splash.options
+    this.entity = new Entity(this, opts.entity)
+    this.splash = new Splash(this, opts.splash)
     this.font = new FontFace(opts.font.family, `url(${opts.font.file})`)
 
     this.fontSize = opts.font.size
@@ -92,8 +87,8 @@ export class Matrix {
     this.font.load().then(() => {
       this.running = true
       this.render()
-      this._splash.start()
-      this._entity.start()
+      this.splash.start()
+      this.entity.start()
     }).catch(() => {
       throw new Error('Failed loading `font.file`')
     })
@@ -113,7 +108,7 @@ export class Matrix {
     this.ctx.lineTo(0, 0)
     this.ctx.stroke()
     this.ctx.restore()
-    this._entity.clear()
+    this.entity.clear()
   }
 
   pause(): void {

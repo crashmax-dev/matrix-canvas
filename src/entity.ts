@@ -3,7 +3,7 @@ import { randomInt } from './utils'
 
 export interface EntityOptions {
   files: string[]
-  size?: [number, number]
+  size?: number
   rotate?: [number, number]
   opacity?: number
   speed?: number
@@ -25,7 +25,7 @@ export class Entity {
   private matrix: Matrix
   public options: Required<EntityOptions> = {
     files: [],
-    size: [32, 32],
+    size: 32,
     rotate: [-30, 30],
     opacity: 0.5,
     speed: 30,
@@ -45,7 +45,7 @@ export class Entity {
     for (const file of this.options.files) {
       this.images.push(
         await new Promise((resolve, reject) => {
-          const image = new Image(this.options.size[0], this.options.size[1])
+          const image = new Image(this.options.size)
           image.src = file
           image.onload = () => resolve(image)
           image.onerror = reject
@@ -84,14 +84,12 @@ export class Entity {
       img.src = this.randomImage()
       img.style.userSelect = 'none'
       img.style.position = 'absolute'
-      img.style.width = randomInt(this.options.size[0], this.options.size[1]) / window.devicePixelRatio + 'px'
-      img.style.opacity = this.options.opacity.toString()
       document.body.appendChild(img)
 
       this.flyingEntities.push({
         dx: 0,
-        x: Math.random() * (this.matrix.canvas.width - this.options.size[0]),
-        y: Math.random() > 0.8 ? -this.options.size[0] : Math.random() * this.matrix.canvas.height,
+        x: Math.random() * (this.matrix.canvas.width - this.options.size),
+        y: Math.random() > 0.8 ? -this.options.size : Math.random() * this.matrix.canvas.height,
         am: Math.random() * 20,
         stepX: 0.02 + Math.random() / 10,
         stepY: 0.7 + Math.random(),
@@ -109,11 +107,21 @@ export class Entity {
 
     const entity = this.flyingEntities
     for (let i = 0; i < entity.length; ++i) {
+      if (Number(entity[i].img.style.width) !== this.options.size) {
+        entity[i].img.style.width = this.options.size / window.devicePixelRatio + 'px'
+      }
+
+      const opacity = this.options.opacity.toString()
+      if (entity[i].img.style.opacity !== opacity) {
+        entity[i].img.style.opacity = opacity
+      }
+
       entity[i].y += entity[i].stepY
 
-      if (entity[i].y > this.matrix.canvas.height + this.options.size[0]) {
-        entity[i].x = Math.random() * (this.matrix.canvas.width - entity[i].am - this.options.size[0])
-        entity[i].y = -this.options.size[0]
+      if (entity[i].y > this.matrix.canvas.height + this.options.size) {
+        entity[i].rotate = randomInt(this.options.rotate[0], this.options.rotate[1])
+        entity[i].x = Math.random() * (this.matrix.canvas.width - entity[i].am - this.options.size)
+        entity[i].y = -this.options.size
         entity[i].stepX = 0.02 + Math.random() / 10
         entity[i].stepY = 0.7 + Math.random()
       }
