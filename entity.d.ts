@@ -1,6 +1,7 @@
 import { Matrix } from './matrix';
 export interface EntityOptions {
     files: string[];
+    enabled?: boolean;
     size?: number;
     rotate?: [number, number];
     opacity?: number;
