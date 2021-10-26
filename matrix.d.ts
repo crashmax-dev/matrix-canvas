@@ -40,6 +40,7 @@ export declare class Matrix {
     clear(): void;
     pause(): void;
     randomColor(): string;
+    handleResize(): void;
     private setSize;
     private initTraces;
     private render;
