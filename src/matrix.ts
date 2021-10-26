@@ -1,24 +1,26 @@
 import { randomInt } from './utils'
 import { Entity, EntityOptions } from './entity'
-import { Splash, SplashesOptions } from './splash'
+import { Splash, SplashOptions } from './splash'
+
+export type { SplashOptions, EntityOptions }
 
 export interface MatrixOptions {
   font: Font
   symbols?: () => string
-  splash?: SplashesOptions
+  splash?: SplashOptions
   entity?: EntityOptions
   autoresize?: boolean
   tracesCount?: number
 }
 
-interface Font {
+export interface Font {
   family: string
   file: string
   size: number,
   colors: string[]
 }
 
-interface Sizes {
+export interface Sizes {
   width?: number
   height?: number
 }
@@ -27,16 +29,20 @@ export class Matrix {
   public ctx: CanvasRenderingContext2D
   public canvas: HTMLCanvasElement
   public font: FontFace
-  public entity: Entity
-  public splash: Splash
-  public target: HTMLElement
-  public fontSize: number
-  public tracesCount: number
-  public autoresize: boolean
-  public running = false
-  public colors: string[]
-  public traces: number[] = []
-  public symbols: (() => string) | undefined
+
+  private _entity: Entity
+  private _splash: Splash
+  private target: HTMLElement
+  private fontSize: number
+  private tracesCount: number
+  private autoresize: boolean
+  private running = false
+  private colors: string[]
+  private traces: number[] = []
+  private symbols: (() => string) | undefined
+
+  private splash: Partial<SplashOptions>
+  private entity: Partial<EntityOptions>
 
   constructor(container: HTMLElement, opts: MatrixOptions) {
     this.target = container
@@ -44,8 +50,10 @@ export class Matrix {
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
     this.target.appendChild(this.canvas)
 
-    this.entity = new Entity(this, opts.entity)
-    this.splash = new Splash(this, opts.splash)
+    this._entity = new Entity(this, opts.entity)
+    this.entity = this._entity.options
+    this._splash = new Splash(this, opts.splash)
+    this.splash = this._splash.options
     this.font = new FontFace(opts.font.family, `url(${opts.font.file})`)
 
     this.fontSize = opts.font.size
@@ -74,14 +82,18 @@ export class Matrix {
     this.setSize()
   }
 
+  get isRunning(): boolean {
+    return this.running
+  }
+
   start(): void {
     if (this.running) return
 
     this.font.load().then(() => {
       this.running = true
       this.render()
-      this.splash.start()
-      this.entity.start()
+      this._splash.start()
+      this._entity.start()
     }).catch(() => {
       throw new Error('Failed loading `font.file`')
     })
@@ -101,7 +113,7 @@ export class Matrix {
     this.ctx.lineTo(0, 0)
     this.ctx.stroke()
     this.ctx.restore()
-    this.entity.clear()
+    this._entity.clear()
   }
 
   pause(): void {

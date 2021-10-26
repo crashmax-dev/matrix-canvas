@@ -1,4 +1,8 @@
-import { Matrix as _Matrix, MatrixOptions } from './matrix'
+import { Matrix as _Matrix, MatrixOptions, EntityOptions } from './matrix'
+
+type MatrixDynamicOptions = Pick<MatrixOptions, 'splash' | 'symbols'> & {
+  entity: Omit<EntityOptions, 'files' | 'count'>
+}
 
 class Matrix {
   private _: _Matrix
@@ -8,7 +12,7 @@ class Matrix {
   }
 
   get isRunning(): boolean {
-    return this._.running
+    return this._.isRunning
   }
 
   start(): void {
@@ -25,6 +29,10 @@ class Matrix {
 
   pause(): void {
     this._.pause()
+  }
+
+  setOptions(options: Partial<MatrixDynamicOptions>): void {
+    Object.assign(this._, options)
   }
 }
 

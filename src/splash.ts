@@ -1,7 +1,7 @@
 import { Matrix } from './matrix'
 import { randomInt } from './utils'
 
-export interface SplashesOptions {
+export interface SplashOptions {
   interval?: number
   enable: boolean
   colors: string[]
@@ -12,7 +12,7 @@ export interface SplashesOptions {
 export class Splash {
   private matrix: Matrix
   private interval: ReturnType<typeof setInterval> | null
-  private options: Required<SplashesOptions> = {
+  public options: Required<SplashOptions> = {
     interval: 200,
     enable: false,
     colors: [],
@@ -21,7 +21,7 @@ export class Splash {
   }
   private isVisible = true
 
-  constructor(matrix: Matrix, options: SplashesOptions | undefined) {
+  constructor(matrix: Matrix, options: SplashOptions | undefined) {
     this.matrix = matrix
     this.options = { ...this.options, ...options }
   }
@@ -52,7 +52,7 @@ export class Splash {
 
   private render(): void {
     if (!this.isVisible) return
-    if (!this.matrix.ctx || !this.matrix.running) return
+    if (!this.matrix.ctx || !this.matrix.isRunning) return
 
     this.matrix.ctx.save()
     this.matrix.ctx.fillStyle = this.matrix.randomColor()

@@ -23,7 +23,7 @@ interface FlyingEntities {
 
 export class Entity {
   private matrix: Matrix
-  private options: Required<EntityOptions> = {
+  public options: Required<EntityOptions> = {
     files: [],
     size: [32, 32],
     rotate: [-30, 30],
@@ -102,7 +102,7 @@ export class Entity {
   }
 
   private render(): void {
-    if (!this.matrix.ctx || !this.matrix.running) return
+    if (!this.matrix.ctx || !this.matrix.isRunning) return
     if (this.images.length !== this.options.files.length) return
 
     this.createEntity()
