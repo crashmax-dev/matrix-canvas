@@ -113,7 +113,7 @@ export class Entity {
 
       if (entity[i].y > this.matrix.canvas.height + this.options.size[0]) {
         entity[i].x = Math.random() * (this.matrix.canvas.width - entity[i].am - this.options.size[0])
-        entity[i].y = 0
+        entity[i].y = -this.options.size[0]
         entity[i].stepX = 0.02 + Math.random() / 10
         entity[i].stepY = 0.7 + Math.random()
       }
