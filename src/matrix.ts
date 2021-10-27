@@ -2,10 +2,8 @@ import { randomInt } from './utils'
 import { Entity, EntityOptions } from './entity'
 import { Splash, SplashOptions } from './splash'
 
-export type { SplashOptions, EntityOptions }
-
 export interface MatrixOptions {
-  font: Font
+  font: FontOptions
   symbols?: () => string
   splash?: SplashOptions
   entity?: EntityOptions
@@ -13,16 +11,15 @@ export interface MatrixOptions {
   tracesCount?: number
 }
 
-export interface Font {
+export type MatrixDynamicOptions = Pick<MatrixOptions, 'splash' | 'symbols'> & {
+  entity: Omit<EntityOptions, 'files' | 'count'>
+}
+
+interface FontOptions {
   family: string
   file: string
   size: number,
   colors: string[]
-}
-
-export interface Sizes {
-  width?: number
-  height?: number
 }
 
 export class Matrix {
@@ -128,6 +125,20 @@ export class Matrix {
   handleResize(): void {
     this.setSize()
     this.clear()
+  }
+
+  setOptions(options: Partial<MatrixDynamicOptions>): void {
+    if (options.entity) {
+      Object.assign(this.entity.options, options.entity)
+      delete options.entity
+    }
+
+    if (options.splash) {
+      Object.assign(this.splash.options, options.splash)
+      delete options.splash
+    }
+
+    Object.assign(this, options)
   }
 
   private setSize(): void {
