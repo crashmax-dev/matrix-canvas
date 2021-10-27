@@ -1,23 +1,21 @@
 import { Entity, EntityOptions } from './entity';
 import { Splash, SplashOptions } from './splash';
-export type { SplashOptions, EntityOptions };
 export interface MatrixOptions {
-    font: Font;
+    font: FontOptions;
     symbols?: () => string;
     splash?: SplashOptions;
     entity?: EntityOptions;
     autoresize?: boolean;
     tracesCount?: number;
 }
-export interface Font {
+export declare type MatrixDynamicOptions = Pick<MatrixOptions, 'splash' | 'symbols'> & {
+    entity: Omit<EntityOptions, 'files' | 'count'>;
+};
+interface FontOptions {
     family: string;
     file: string;
     size: number;
     colors: string[];
-}
-export interface Sizes {
-    width?: number;
-    height?: number;
 }
 export declare class Matrix {
     ctx: CanvasRenderingContext2D;
@@ -41,7 +39,9 @@ export declare class Matrix {
     pause(): void;
     randomColor(): string;
     handleResize(): void;
+    setOptions(options: Partial<MatrixDynamicOptions>): void;
     private setSize;
     private initTraces;
     private render;
 }
+export {};

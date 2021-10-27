@@ -1,7 +1,4 @@
-import { MatrixOptions, EntityOptions } from './matrix';
-declare type MatrixDynamicOptions = Pick<MatrixOptions, 'splash' | 'symbols'> & {
-    entity: Omit<EntityOptions, 'files' | 'count'>;
-};
+import { MatrixOptions, MatrixDynamicOptions } from './matrix';
 declare class Matrix {
     private _;
     constructor(container: HTMLElement, options: MatrixOptions);
