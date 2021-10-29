@@ -34,30 +34,21 @@ export class Entity {
     count: 15
   }
   private flyingEntities: FlyingEntities[] = []
-  private images: HTMLImageElement[] = []
   private interval: ReturnType<typeof setInterval> | null
 
   constructor(matrix: Matrix, options: EntityOptions | undefined) {
     this.matrix = matrix
     this.options = { ...this.options, ...options }
-    this.loadImages()
   }
 
-  private async loadImages(): Promise<void> {
-    for (const file of this.options.files) {
-      this.images.push(
-        await new Promise((resolve, reject) => {
-          const image = new Image(this.options.size)
-          image.src = file
-          image.onload = () => resolve(image)
-          image.onerror = reject
-        })
-      )
-    }
-  }
+  private randomImage(): HTMLImageElement {
+    const image = new Image(this.options.size)
+    const file = this.options.files[randomInt(0, this.options.files.length - 1)]
+    image.src = file
+    image.style.userSelect = 'none'
+    image.style.position = 'absolute'
 
-  private randomImage(): string {
-    return this.images[randomInt(0, this.images.length - 1)].src
+    return image
   }
 
   start(): void {
@@ -83,10 +74,7 @@ export class Entity {
 
   private createEntity(): void {
     while (this.flyingEntities.length !== this.options.count) {
-      const img = new Image()
-      img.src = this.randomImage()
-      img.style.userSelect = 'none'
-      img.style.position = 'absolute'
+      const img = this.randomImage()
       document.body.appendChild(img)
 
       this.flyingEntities.push({
@@ -104,7 +92,7 @@ export class Entity {
 
   private render(): void {
     if (!this.matrix.ctx || !this.options.enabled) return
-    if (this.images.length !== this.options.files.length) return
+    if (!this.options.files.length) return
 
     this.createEntity()
 
