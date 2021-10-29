@@ -159,7 +159,7 @@ export class Matrix {
     window.requestAnimationFrame(() => this.render())
 
     this.ctx.fillStyle = 'rgba(0, 0, 0, .05)'
-    this.ctx.fillRect(0, 0, this.canvas.width - window.devicePixelRatio, this.canvas.height - window.devicePixelRatio)
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     this.ctx.fillStyle = this.randomColor()
     this.ctx.font = `${this.fontSize}pt ${this.font.family}`
 
