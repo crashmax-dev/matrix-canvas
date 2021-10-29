@@ -1,6 +1,6 @@
 {
   "name": "@crashmax/canvas-matrix2d",
-  "version": "1.2.0-pre.8",
+  "version": "1.2.0-pre.9",
   "description": "canvas-matrix2d",
   "module": "./dist/matrix.js",
   "types": "./dist/matrix.d.ts",
