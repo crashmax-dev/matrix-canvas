@@ -1,6 +1,22 @@
 const query = new URLSearchParams(window.location.search)
 const symbols = query.get('symbols')?.split(',') || []
 const randomInt = (min, max) => Math.floor(min + Math.random() * (max + 1 - min))
+const matrixContainer = document.querySelector('.matrix-container')
+
+/**
+ * fullscreen
+ */
+document.addEventListener('keydown', event => {
+  if (event.code === 'F11') {
+    event.preventDefault()
+
+    if (matrixContainer.requestFullscreen) {
+      matrixContainer.requestFullscreen()
+    } else if (matrixContainer.webkitRequestFullscreen) {
+      matrixContainer.webkitRequestFullscreen()
+    }
+  }
+})
 
 /**
  * canvas-matrix2d
@@ -47,7 +63,7 @@ const matrixConfig = {
 }
 
 const { splash, entity } = matrixConfig
-const matrix = new Matrix(document.body, matrixConfig)
+const matrix = new Matrix(matrixContainer, matrixConfig)
 console.log(matrix)
 matrix.start()
 
