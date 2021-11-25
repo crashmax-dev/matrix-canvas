@@ -1,4 +1,4 @@
-import { randomInt } from './utils'
+import { randomInt } from './helpers'
 import { Entity, EntityOptions } from './entity'
 import { Splash, SplashOptions } from './splash'
 

@@ -1,5 +1,5 @@
 import { Matrix } from './matrix'
-import { randomInt } from './utils'
+import { randomInt } from './helpers'
 
 export interface EntityOptions {
   files: string[]
