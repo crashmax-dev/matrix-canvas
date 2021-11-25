@@ -3,5 +3,9 @@
   "env": {
     "node": true,
     "browser": true
+  },
+  "rules": {
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/restrict-plus-operands": "off"
   }
 }
