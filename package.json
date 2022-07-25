@@ -1,6 +1,6 @@
 {
   "name": "matrix-canvas",
-  "version": "1.2.0-pre.9",
+  "version": "1.0.0-beta.0",
   "description": "canvas-matrix2d",
   "module": "./dist/matrix.js",
   "types": "./dist/matrix.d.ts",
