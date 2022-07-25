@@ -1,8 +1,10 @@
-# canvas-matrix2d
+# matrix-canvas
 
-![Npm Version](https://img.shields.io/npm/v/@crashmax/canvas-matrix2d)
-[![Build Status](https://travis-ci.com/crashmax-dev/canvas-matrix2d.svg?branch=master)](https://travis-ci.com/crashmax-dev/canvas-matrix2d)
+![Npm Version](https://img.shields.io/npm/v/@crashmax/matrix-canvas)
+
+> **Note**\
+> This project work in progress
 
 ## Demo
 
->  https://crashmax-dev.github.io/canvas-matrix2d/
+>  https://crashmax-dev.github.io/matrix-canvas/
