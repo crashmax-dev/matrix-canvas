@@ -14,5 +14,6 @@ jobs:
       - run: npm run build
       - uses: JS-DevTools/npm-publish@v1
         with:
+          tag: beta
           registry: https://registry.npmjs.org/
           token: ${{ secrets.NPM_TOKEN }}
