@@ -1,26 +1,8 @@
-import { Entity, EntityOptions } from './entity.js'
+import { Entity } from './entity.js'
 import { randomInt } from './helpers.js'
-import { Splash, SplashOptions } from './splash.js'
-
-export interface MatrixOptions {
-  font: FontOptions
-  symbols?: () => string
-  splash?: SplashOptions
-  entity?: EntityOptions
-  autoresize?: boolean
-  tracesCount?: number
-}
-
-export type MatrixDynamicOptions = Pick<MatrixOptions, 'splash' | 'symbols'> & {
-  entity: Omit<EntityOptions, 'files' | 'count'>
-}
-
-export interface FontOptions {
-  family: string
-  file: string
-  size: number
-  colors?: string[]
-}
+import { opts } from './options.js'
+import { Splash } from './splash.js'
+import type { MatrixOptions } from './types.js'
 
 export class Matrix {
   public ctx: CanvasRenderingContext2D
@@ -29,47 +11,23 @@ export class Matrix {
   public entity: Entity
   public splash: Splash
 
-  private fontSize: number
-  private tracesCount: number
-  private autoresize: boolean
   private running = false
-  private colors: string[]
-  private traces: number[] = []
-  private symbols: (() => string) | undefined
+  private lines: number[] = []
 
-  constructor(
-    private readonly container: Element,
-    private readonly opts: MatrixOptions
-  ) {
+  constructor(private readonly container: Element, options: MatrixOptions) {
     this.canvas = document.createElement('canvas')
-    this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
+    this.ctx = this.canvas.getContext('2d')
     this.container.appendChild(this.canvas)
-    this.setSize()
+    opts.updateOptions(options)
+    this.updateSize()
 
-    this.entity = new Entity(this, opts.entity)
-    this.splash = new Splash(this, opts.splash)
+    this.entity = new Entity(this)
+    this.splash = new Splash(this)
     this.font = new FontFace(opts.font.family, `url(${opts.font.file})`)
 
-    this.fontSize = opts.font.size
-    this.tracesCount = Math.round(window.innerWidth / 10)
-    this.autoresize = opts.autoresize ?? true
-    this.symbols = opts.symbols
-    this.colors = opts.font.colors || [
-      '#225400',
-      '#66FF00',
-      '#155400',
-      '#395410',
-      '#7FFF00',
-      '#005400',
-      '#2A5400',
-      '#3FFF00',
-      '#00FF00',
-      '#ADFF2F'
-    ]
-
-    if (this.autoresize) {
+    if (opts.autoresize) {
       this.handleResize = this.handleResize.bind(this)
-      window.addEventListener('resize', this.handleResize, false)
+      window.addEventListener('resize', this.handleResize)
     }
   }
 
@@ -77,32 +35,30 @@ export class Matrix {
     return this.running
   }
 
-  start(): void {
+  async start(): Promise<void> {
     if (this.running) return
 
-    this.font
-      .load()
-      .then(() => {
-        this.running = true
-        this.render()
-        this.splash.start()
-        this.entity.start()
-      })
-      .catch(() => {
-        throw new Error('Failed loading `font.file`')
-      })
+    try {
+      await this.font.load()
+      this.running = true
+      this.render()
+      this.splash.start()
+      this.entity.start()
+    } catch {
+      throw 'Failed loading `font.file`'
+    }
   }
 
   stop(): void {
     this.running = false
-    window.removeEventListener('resize', this.handleResize, false)
+    window.removeEventListener('resize', this.handleResize)
     this.clear()
   }
 
   clear(): void {
     if (!this.ctx) return
 
-    this.traces = []
+    this.lines = []
     this.ctx.save()
     this.ctx.globalCompositeOperation = 'copy'
     this.ctx.lineTo(0, 0)
@@ -122,62 +78,49 @@ export class Matrix {
     if (this.running) this.render()
   }
 
-  randomColor(): string {
-    return this.colors[randomInt(0, this.colors.length - 1)]!
+  getColor(): string {
+    return opts.colors[randomInt(0, opts.colors.length - 1)]
   }
 
-  handleResize(): void {
-    this.setSize()
+  private handleResize(): void {
+    console.log('here')
+    this.updateSize()
     this.clear()
   }
 
-  setOptions(options: Partial<MatrixDynamicOptions>): void {
-    if (options.entity) {
-      Object.assign(this.entity.options, options.entity)
-      delete options.entity
-    }
-
-    if (options.splash) {
-      Object.assign(this.splash.options, options.splash)
-      delete options.splash
-    }
-
-    Object.assign(this, options)
-  }
-
-  private setSize(): void {
+  private updateSize(): void {
     this.canvas.width = this.container.clientWidth
     this.canvas.height = this.container.clientHeight
   }
 
-  private initTraces(): void {
-    while (this.traces.length !== this.tracesCount) {
-      this.traces.push(randomInt(0, window.innerHeight))
+  private initLines(): void {
+    while (this.lines.length !== opts.lineCount) {
+      this.lines.push(randomInt(0, window.innerHeight))
     }
   }
 
   private render(): void {
     if (!this.ctx || !this.running) return
-    if (this.traces.length !== this.tracesCount) this.initTraces()
+    if (this.lines.length !== opts.lineCount) this.initLines()
 
     window.requestAnimationFrame(() => this.render())
 
     this.ctx.fillStyle = 'rgba(0, 0, 0, .05)'
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
-    this.ctx.fillStyle = this.randomColor()
-    this.ctx.font = `${this.fontSize}pt ${this.font.family}`
+    this.ctx.fillStyle = this.getColor()
+    this.ctx.font = `${opts.font.size}pt ${this.font.family}`
 
-    this.traces.map((y, i) => {
+    this.lines.map((y, i) => {
       const symbol =
-        this.symbols?.call(this) ||
+        opts.symbols?.call(this) ||
         String.fromCharCode(100 + 28 * Math.random())
-      const x = i * this.fontSize + this.fontSize
+      const x = i * (opts.font.size * 2)
       this.ctx.fillText(symbol, x, y)
 
       if (y > 100 + Math.random() * 10000) {
-        this.traces[i] = 0
+        this.lines[i] = 0
       } else {
-        this.traces[i] = y + 10
+        this.lines[i] = y + 10
       }
     })
   }

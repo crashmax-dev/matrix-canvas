@@ -50,8 +50,8 @@ const matrixConfig: MatrixOptions = {
 }
 
 const matrix = new Matrix(matrixContainer, matrixConfig)
+await matrix.start()
 console.log(matrix)
-matrix.start()
 
 document.addEventListener('keydown', (event) => {
   if (event.code === 'F11') {

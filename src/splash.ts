@@ -1,33 +1,18 @@
 import { randomInt } from './helpers.js'
 import { Matrix } from './matrix.js'
-
-export interface SplashOptions {
-  interval?: number
-  enabled: boolean
-  colors: string[]
-  texts: string[]
-  size?: number
-}
+import { opts } from './options.js'
 
 export class Splash {
   private matrix: Matrix
   private interval: ReturnType<typeof setInterval> | null
-  public options: Required<SplashOptions> = {
-    interval: 200,
-    enabled: false,
-    colors: [],
-    texts: [],
-    size: 40
-  }
   private isVisible = true
 
-  constructor(matrix: Matrix, options: SplashOptions | undefined) {
+  constructor(matrix: Matrix) {
     this.matrix = matrix
-    this.options = { ...this.options, ...options }
   }
 
   private randomSplash(): string {
-    return this.options.texts[randomInt(0, this.options.texts.length - 1)]
+    return opts.splash.texts[randomInt(0, opts.splash.texts.length - 1)]
   }
 
   private updateVisibleState(): void {
@@ -39,7 +24,7 @@ export class Splash {
       this.interval = setInterval(() => {
         this.updateVisibleState()
         this.render()
-      }, this.options.interval)
+      }, opts.splash.interval)
     }
   }
 
@@ -56,10 +41,10 @@ export class Splash {
 
     this.matrix.ctx.save()
 
-    if (!this.options.enabled) return
+    if (!opts.splash.enabled) return
 
-    this.matrix.ctx.fillStyle = this.matrix.randomColor()
-    this.matrix.ctx.font = `${this.options.size / window.devicePixelRatio}pt ${
+    this.matrix.ctx.fillStyle = this.matrix.getColor()
+    this.matrix.ctx.font = `${opts.splash.size / window.devicePixelRatio}pt ${
       this.matrix.font.family
     }`
     this.matrix.ctx.rotate(randomInt(0, 360))
