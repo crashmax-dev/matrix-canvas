@@ -1,5 +1,5 @@
-import { Matrix } from './matrix'
-import { randomInt } from './helpers'
+import { randomInt } from './helpers.js'
+import { Matrix } from './matrix.js'
 
 export interface SplashOptions {
   interval?: number
@@ -59,7 +59,9 @@ export class Splash {
     if (!this.options.enabled) return
 
     this.matrix.ctx.fillStyle = this.matrix.randomColor()
-    this.matrix.ctx.font = `${this.options.size / window.devicePixelRatio}pt ${this.matrix.font.family}`
+    this.matrix.ctx.font = `${this.options.size / window.devicePixelRatio}pt ${
+      this.matrix.font.family
+    }`
     this.matrix.ctx.rotate(randomInt(0, 360))
     this.matrix.ctx.fillText(
       this.randomSplash(),

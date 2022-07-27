@@ -1,5 +1,5 @@
-import { Matrix } from './matrix'
-import { randomInt } from './helpers'
+import { randomInt } from './helpers.js'
+import { Matrix } from './matrix.js'
 
 export interface EntityOptions {
   files: string[]
@@ -68,7 +68,7 @@ export class Entity {
   }
 
   clear(): void {
-    this.flyingEntities.forEach(entity => entity.img.remove())
+    this.flyingEntities.forEach((entity) => entity.img.remove())
     this.flyingEntities = []
   }
 
@@ -80,7 +80,10 @@ export class Entity {
       this.flyingEntities.push({
         dx: 0,
         x: Math.random() * (this.matrix.canvas.width - this.options.size),
-        y: Math.random() > 0.8 ? -this.options.size : Math.random() * this.matrix.canvas.height,
+        y:
+          Math.random() > 0.8
+            ? -this.options.size
+            : Math.random() * this.matrix.canvas.height,
         am: Math.random() * 20,
         stepX: 0.02 + Math.random() / 10,
         stepY: 0.7 + Math.random(),
@@ -99,7 +102,8 @@ export class Entity {
     const entity = this.flyingEntities
     for (let i = 0; i < entity.length; ++i) {
       if (Number(entity[i].img.style.width) !== this.options.size) {
-        entity[i].img.style.width = this.options.size / window.devicePixelRatio + 'px'
+        entity[i].img.style.width =
+          this.options.size / window.devicePixelRatio + 'px'
       }
 
       const opacity = this.options.opacity.toString()
@@ -110,8 +114,13 @@ export class Entity {
       entity[i].y += entity[i].stepY
 
       if (entity[i].y > this.matrix.canvas.height + this.options.size) {
-        entity[i].rotate = randomInt(this.options.rotate[0], this.options.rotate[1])
-        entity[i].x = Math.random() * (this.matrix.canvas.width - entity[i].am - this.options.size)
+        entity[i].rotate = randomInt(
+          this.options.rotate[0],
+          this.options.rotate[1]
+        )
+        entity[i].x =
+          Math.random() *
+          (this.matrix.canvas.width - entity[i].am - this.options.size)
         entity[i].y = -this.options.size
         entity[i].stepX = 0.02 + Math.random() / 10
         entity[i].stepY = 0.7 + Math.random()
@@ -119,10 +128,12 @@ export class Entity {
 
       entity[i].dx += entity[i].stepX
       entity[i].img.style.top = entity[i].y + 'px'
-      entity[i].img.style.left = (entity[i].x + entity[i].am * Math.sin(entity[i].dx)) + 'px'
+      entity[i].img.style.left =
+        entity[i].x + entity[i].am * Math.sin(entity[i].dx) + 'px'
 
       if (!(!this.options.rotate[0] && !this.options.rotate[1])) {
-        entity[i].img.style.transform = 'rotate(' + (entity[i].rotate + 30 * Math.sin(entity[i].dx)) + 'deg)'
+        entity[i].img.style.transform =
+          'rotate(' + (entity[i].rotate + 30 * Math.sin(entity[i].dx)) + 'deg)'
       }
     }
   }

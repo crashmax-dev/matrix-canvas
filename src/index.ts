@@ -1,9 +1,10 @@
-import { Matrix as _Matrix, MatrixOptions, MatrixDynamicOptions } from './matrix'
+import type { MatrixDynamicOptions, MatrixOptions } from './matrix'
+import { Matrix as _Matrix } from './matrix.js'
 
 class Matrix {
   private _: _Matrix
 
-  constructor(container: HTMLElement, options: MatrixOptions) {
+  constructor(container: Element, options: MatrixOptions) {
     this._ = new _Matrix(container, options)
   }
 

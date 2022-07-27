@@ -1,6 +1,6 @@
-import { randomInt } from './helpers'
-import { Entity, EntityOptions } from './entity'
-import { Splash, SplashOptions } from './splash'
+import { Entity, EntityOptions } from './entity.js'
+import { randomInt } from './helpers.js'
+import { Splash, SplashOptions } from './splash.js'
 
 export interface MatrixOptions {
   font: FontOptions
@@ -15,11 +15,11 @@ export type MatrixDynamicOptions = Pick<MatrixOptions, 'splash' | 'symbols'> & {
   entity: Omit<EntityOptions, 'files' | 'count'>
 }
 
-interface FontOptions {
+export interface FontOptions {
   family: string
   file: string
-  size: number,
-  colors: string[]
+  size: number
+  colors?: string[]
 }
 
 export class Matrix {
@@ -29,7 +29,6 @@ export class Matrix {
   public entity: Entity
   public splash: Splash
 
-  private target: HTMLElement
   private fontSize: number
   private tracesCount: number
   private autoresize: boolean
@@ -38,11 +37,13 @@ export class Matrix {
   private traces: number[] = []
   private symbols: (() => string) | undefined
 
-  constructor(container: HTMLElement, opts: MatrixOptions) {
-    this.target = container
+  constructor(
+    private readonly container: Element,
+    private readonly opts: MatrixOptions
+  ) {
     this.canvas = document.createElement('canvas')
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
-    this.target.appendChild(this.canvas)
+    this.container.appendChild(this.canvas)
     this.setSize()
 
     this.entity = new Entity(this, opts.entity)
@@ -79,14 +80,17 @@ export class Matrix {
   start(): void {
     if (this.running) return
 
-    this.font.load().then(() => {
-      this.running = true
-      this.render()
-      this.splash.start()
-      this.entity.start()
-    }).catch(() => {
-      throw new Error('Failed loading `font.file`')
-    })
+    this.font
+      .load()
+      .then(() => {
+        this.running = true
+        this.render()
+        this.splash.start()
+        this.entity.start()
+      })
+      .catch(() => {
+        throw new Error('Failed loading `font.file`')
+      })
   }
 
   stop(): void {
@@ -119,7 +123,7 @@ export class Matrix {
   }
 
   randomColor(): string {
-    return this.colors[randomInt(0, this.colors.length - 1)]
+    return this.colors[randomInt(0, this.colors.length - 1)]!
   }
 
   handleResize(): void {
@@ -142,8 +146,8 @@ export class Matrix {
   }
 
   private setSize(): void {
-    this.canvas.width = this.target.clientWidth
-    this.canvas.height = this.target.clientHeight
+    this.canvas.width = this.container.clientWidth
+    this.canvas.height = this.container.clientHeight
   }
 
   private initTraces(): void {
@@ -164,8 +168,10 @@ export class Matrix {
     this.ctx.font = `${this.fontSize}pt ${this.font.family}`
 
     this.traces.map((y, i) => {
-      const symbol = this.symbols?.call(this) || String.fromCharCode(100 + 28 * Math.random())
-      const x = (i * this.fontSize) + this.fontSize
+      const symbol =
+        this.symbols?.call(this) ||
+        String.fromCharCode(100 + 28 * Math.random())
+      const x = i * this.fontSize + this.fontSize
       this.ctx.fillText(symbol, x, y)
 
       if (y > 100 + Math.random() * 10000) {
