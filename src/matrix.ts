@@ -1,16 +1,17 @@
 import { Entity } from './entity.js'
 import { randomInt } from './helpers.js'
 import { opts } from './options.js'
+import { Resize } from './resize.js'
 import { Splash } from './splash.js'
 import type { MatrixOptions } from './types.js'
 
 export class Matrix {
-  public ctx: CanvasRenderingContext2D
-  public canvas: HTMLCanvasElement
-  public font: FontFace
-  public entity: Entity
-  public splash: Splash
-
+  private ctx: CanvasRenderingContext2D
+  private canvas: HTMLCanvasElement
+  private font: FontFace
+  private entity: Entity
+  private splash: Splash
+  private resize: Resize
   private running = false
   private lines: number[] = []
 
@@ -21,14 +22,10 @@ export class Matrix {
     opts.updateOptions(options)
     this.updateSize()
 
+    this.resize = new Resize(this)
     this.entity = new Entity(this)
     this.splash = new Splash(this)
     this.font = new FontFace(opts.font.family, `url(${opts.font.file})`)
-
-    if (opts.autoresize) {
-      this.handleResize = this.handleResize.bind(this)
-      window.addEventListener('resize', this.handleResize)
-    }
   }
 
   get isRunning(): boolean {
@@ -37,11 +34,12 @@ export class Matrix {
 
   async start(): Promise<void> {
     if (this.running) return
+    this.running = true
 
     try {
       await this.font.load()
-      this.running = true
       this.render()
+      this.resize.mount()
       this.splash.start()
       this.entity.start()
     } catch {
@@ -51,7 +49,7 @@ export class Matrix {
 
   stop(): void {
     this.running = false
-    window.removeEventListener('resize', this.handleResize)
+    this.resize.unmount()
     this.clear()
   }
 
@@ -75,20 +73,16 @@ export class Matrix {
 
   pause(): void {
     this.running = !this.running
-    if (this.running) this.render()
+    if (this.running) {
+      this.render()
+    }
   }
 
   getColor(): string {
     return opts.colors[randomInt(0, opts.colors.length - 1)]
   }
 
-  private handleResize(): void {
-    console.log('here')
-    this.updateSize()
-    this.clear()
-  }
-
-  private updateSize(): void {
+  updateSize(): void {
     this.canvas.width = this.container.clientWidth
     this.canvas.height = this.container.clientHeight
   }
